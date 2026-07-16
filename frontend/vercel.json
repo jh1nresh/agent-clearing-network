@@ -1,0 +1,11 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "installCommand": "npm install",
+  "buildCommand": "npx prisma generate && next build",
+  "crons": [
+    {
+      "path": "/api/cron/reconcile-bsc-settle",
+      "schedule": "*/5 * * * *"
+    }
+  ]
+}

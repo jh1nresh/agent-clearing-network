@@ -1,0 +1,1204 @@
+/**
+ * Program IDL in camelCase format in order to be used in JS/TS.
+ *
+ * Note that this is only a type helper and is not the actual IDL. The original
+ * IDL can be found at `target/idl/job_escrow.json`.
+ */
+export type JobEscrow = {
+  "address": "3vVNQgBxwUUkHNYM7En3zXehrpH9ZWWdJraRWpcovGRX",
+  "metadata": {
+    "name": "jobEscrow",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "Escrow state machine for agent jobs — USDC vault + evaluator-gated settlement"
+  },
+  "instructions": [
+    {
+      "name": "acceptResult",
+      "docs": [
+        "Evaluator accepts. Submitted → Completed. Pays provider."
+      ],
+      "discriminator": [
+        136,
+        134,
+        91,
+        171,
+        167,
+        202,
+        234,
+        181
+      ],
+      "accounts": [
+        {
+          "name": "job",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  106,
+                  111,
+                  98
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "job.client",
+                "account": "job"
+              },
+              {
+                "kind": "account",
+                "path": "job.nonce",
+                "account": "job"
+              }
+            ]
+          }
+        },
+        {
+          "name": "vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "job"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  6,
+                  221,
+                  246,
+                  225,
+                  215,
+                  101,
+                  161,
+                  147,
+                  217,
+                  203,
+                  225,
+                  70,
+                  206,
+                  235,
+                  121,
+                  172,
+                  28,
+                  180,
+                  133,
+                  237,
+                  95,
+                  91,
+                  55,
+                  145,
+                  58,
+                  140,
+                  245,
+                  133,
+                  126,
+                  255,
+                  0,
+                  169
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "providerTokenAccount",
+          "writable": true
+        },
+        {
+          "name": "clientTokenAccount",
+          "writable": true
+        },
+        {
+          "name": "provider",
+          "docs": [
+            "and by the reputation PDA seeds derived from this key."
+          ],
+          "relations": [
+            "job"
+          ]
+        },
+        {
+          "name": "providerReputation",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  114,
+                  101,
+                  112,
+                  117,
+                  116,
+                  97,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "provider"
+              }
+            ],
+            "program": {
+              "kind": "account",
+              "path": "reputationProgram"
+            }
+          }
+        },
+        {
+          "name": "reputationProgram",
+          "address": "BmhJPfUSCnrX2ctUcGCHJ6xLL8RwkWXU9VdxMAHHAH46"
+        },
+        {
+          "name": "mint",
+          "relations": [
+            "job"
+          ]
+        },
+        {
+          "name": "evaluator",
+          "signer": true,
+          "relations": [
+            "job"
+          ]
+        },
+        {
+          "name": "tokenProgram",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "expireJob",
+      "docs": [
+        "Anyone can expire a Funded job past its deadline. Refunds client."
+      ],
+      "discriminator": [
+        127,
+        5,
+        119,
+        250,
+        214,
+        255,
+        102,
+        168
+      ],
+      "accounts": [
+        {
+          "name": "job",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  106,
+                  111,
+                  98
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "job.client",
+                "account": "job"
+              },
+              {
+                "kind": "account",
+                "path": "job.nonce",
+                "account": "job"
+              }
+            ]
+          }
+        },
+        {
+          "name": "vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "job"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  6,
+                  221,
+                  246,
+                  225,
+                  215,
+                  101,
+                  161,
+                  147,
+                  217,
+                  203,
+                  225,
+                  70,
+                  206,
+                  235,
+                  121,
+                  172,
+                  28,
+                  180,
+                  133,
+                  237,
+                  95,
+                  91,
+                  55,
+                  145,
+                  58,
+                  140,
+                  245,
+                  133,
+                  126,
+                  255,
+                  0,
+                  169
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "clientTokenAccount",
+          "writable": true
+        },
+        {
+          "name": "mint",
+          "relations": [
+            "job"
+          ]
+        },
+        {
+          "name": "tokenProgram",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "openJob",
+      "docs": [
+        "Client opens a job and funds the vault atomically (Funded state)."
+      ],
+      "discriminator": [
+        163,
+        204,
+        98,
+        140,
+        176,
+        150,
+        55,
+        123
+      ],
+      "accounts": [
+        {
+          "name": "job",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  106,
+                  111,
+                  98
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "client"
+              },
+              {
+                "kind": "arg",
+                "path": "nonce"
+              }
+            ]
+          }
+        },
+        {
+          "name": "vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "job"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  6,
+                  221,
+                  246,
+                  225,
+                  215,
+                  101,
+                  161,
+                  147,
+                  217,
+                  203,
+                  225,
+                  70,
+                  206,
+                  235,
+                  121,
+                  172,
+                  28,
+                  180,
+                  133,
+                  237,
+                  95,
+                  91,
+                  55,
+                  145,
+                  58,
+                  140,
+                  245,
+                  133,
+                  126,
+                  255,
+                  0,
+                  169
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "clientTokenAccount",
+          "writable": true
+        },
+        {
+          "name": "mint"
+        },
+        {
+          "name": "client",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "provider",
+          "docs": [
+            "via has_one = provider on the job account."
+          ]
+        },
+        {
+          "name": "evaluator",
+          "docs": [
+            "via has_one = evaluator."
+          ]
+        },
+        {
+          "name": "providerReputation",
+          "docs": [
+            "F4 fix: require provider's reputation PDA at open time so a hire can't land",
+            "in Submitted and get stuck because record_completion CPI fails at close.",
+            "seeds::program pins derivation to the reputation_ledger program id."
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  114,
+                  101,
+                  112,
+                  117,
+                  116,
+                  97,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "provider"
+              }
+            ],
+            "program": {
+              "kind": "account",
+              "path": "reputationProgram"
+            }
+          }
+        },
+        {
+          "name": "reputationProgram",
+          "address": "BmhJPfUSCnrX2ctUcGCHJ6xLL8RwkWXU9VdxMAHHAH46"
+        },
+        {
+          "name": "systemProgram",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "tokenProgram",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "associatedTokenProgram",
+          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+        },
+        {
+          "name": "rent",
+          "address": "SysvarRent111111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "nonce",
+          "type": {
+            "array": [
+              "u8",
+              8
+            ]
+          }
+        },
+        {
+          "name": "skillId",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        },
+        {
+          "name": "amount",
+          "type": "u64"
+        },
+        {
+          "name": "ttlSecs",
+          "type": "i64"
+        }
+      ]
+    },
+    {
+      "name": "rejectResult",
+      "docs": [
+        "Evaluator rejects. Submitted → Rejected. Refunds client."
+      ],
+      "discriminator": [
+        24,
+        89,
+        221,
+        248,
+        135,
+        166,
+        172,
+        169
+      ],
+      "accounts": [
+        {
+          "name": "job",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  106,
+                  111,
+                  98
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "job.client",
+                "account": "job"
+              },
+              {
+                "kind": "account",
+                "path": "job.nonce",
+                "account": "job"
+              }
+            ]
+          }
+        },
+        {
+          "name": "vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "job"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  6,
+                  221,
+                  246,
+                  225,
+                  215,
+                  101,
+                  161,
+                  147,
+                  217,
+                  203,
+                  225,
+                  70,
+                  206,
+                  235,
+                  121,
+                  172,
+                  28,
+                  180,
+                  133,
+                  237,
+                  95,
+                  91,
+                  55,
+                  145,
+                  58,
+                  140,
+                  245,
+                  133,
+                  126,
+                  255,
+                  0,
+                  169
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "providerTokenAccount",
+          "writable": true
+        },
+        {
+          "name": "clientTokenAccount",
+          "writable": true
+        },
+        {
+          "name": "provider",
+          "docs": [
+            "and by the reputation PDA seeds derived from this key."
+          ],
+          "relations": [
+            "job"
+          ]
+        },
+        {
+          "name": "providerReputation",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  114,
+                  101,
+                  112,
+                  117,
+                  116,
+                  97,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "provider"
+              }
+            ],
+            "program": {
+              "kind": "account",
+              "path": "reputationProgram"
+            }
+          }
+        },
+        {
+          "name": "reputationProgram",
+          "address": "BmhJPfUSCnrX2ctUcGCHJ6xLL8RwkWXU9VdxMAHHAH46"
+        },
+        {
+          "name": "mint",
+          "relations": [
+            "job"
+          ]
+        },
+        {
+          "name": "evaluator",
+          "signer": true,
+          "relations": [
+            "job"
+          ]
+        },
+        {
+          "name": "tokenProgram",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "submitResult",
+      "docs": [
+        "Provider submits result URI. Funded → Submitted."
+      ],
+      "discriminator": [
+        240,
+        42,
+        89,
+        180,
+        10,
+        239,
+        9,
+        214
+      ],
+      "accounts": [
+        {
+          "name": "job",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  106,
+                  111,
+                  98
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "job.client",
+                "account": "job"
+              },
+              {
+                "kind": "account",
+                "path": "job.nonce",
+                "account": "job"
+              }
+            ]
+          }
+        },
+        {
+          "name": "provider",
+          "signer": true,
+          "relations": [
+            "job"
+          ]
+        }
+      ],
+      "args": [
+        {
+          "name": "resultUri",
+          "type": "string"
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "job",
+      "discriminator": [
+        75,
+        124,
+        80,
+        203,
+        161,
+        180,
+        202,
+        80
+      ]
+    },
+    {
+      "name": "reputation",
+      "discriminator": [
+        55,
+        148,
+        90,
+        71,
+        68,
+        183,
+        193,
+        28
+      ]
+    }
+  ],
+  "events": [
+    {
+      "name": "jobCompleted",
+      "discriminator": [
+        176,
+        207,
+        246,
+        115,
+        95,
+        179,
+        9,
+        132
+      ]
+    },
+    {
+      "name": "jobExpired",
+      "discriminator": [
+        213,
+        123,
+        115,
+        173,
+        157,
+        242,
+        12,
+        71
+      ]
+    },
+    {
+      "name": "jobOpened",
+      "discriminator": [
+        194,
+        169,
+        75,
+        170,
+        253,
+        153,
+        200,
+        220
+      ]
+    },
+    {
+      "name": "jobRejected",
+      "discriminator": [
+        23,
+        78,
+        227,
+        57,
+        28,
+        0,
+        197,
+        216
+      ]
+    },
+    {
+      "name": "jobSubmitted",
+      "discriminator": [
+        129,
+        204,
+        35,
+        127,
+        38,
+        50,
+        131,
+        248
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "zeroAmount",
+      "msg": "Amount must be > 0"
+    },
+    {
+      "code": 6001,
+      "name": "invalidTtl",
+      "msg": "TTL must be > 0"
+    },
+    {
+      "code": 6002,
+      "name": "invalidState",
+      "msg": "Invalid job state for this instruction"
+    },
+    {
+      "code": 6003,
+      "name": "resultUriTooLong",
+      "msg": "Result URI exceeds maximum length"
+    },
+    {
+      "code": 6004,
+      "name": "notYetExpired",
+      "msg": "Job has not yet reached its expiration"
+    },
+    {
+      "code": 6005,
+      "name": "clockOverflow",
+      "msg": "Clock arithmetic overflow"
+    },
+    {
+      "code": 6006,
+      "name": "selfHire",
+      "msg": "Client cannot hire themselves as provider"
+    },
+    {
+      "code": 6007,
+      "name": "providerIsEvaluator",
+      "msg": "Provider cannot act as evaluator"
+    },
+    {
+      "code": 6008,
+      "name": "expired",
+      "msg": "Job has already expired — submit blocked"
+    }
+  ],
+  "types": [
+    {
+      "name": "job",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "nonce",
+            "type": {
+              "array": [
+                "u8",
+                8
+              ]
+            }
+          },
+          {
+            "name": "client",
+            "type": "pubkey"
+          },
+          {
+            "name": "provider",
+            "type": "pubkey"
+          },
+          {
+            "name": "evaluator",
+            "type": "pubkey"
+          },
+          {
+            "name": "mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "skillId",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "state",
+            "type": "u8"
+          },
+          {
+            "name": "openedAt",
+            "type": "i64"
+          },
+          {
+            "name": "expiresAt",
+            "type": "i64"
+          },
+          {
+            "name": "resultUri",
+            "type": "string"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "jobCompleted",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "job",
+            "type": "pubkey"
+          },
+          {
+            "name": "provider",
+            "type": "pubkey"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "jobExpired",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "job",
+            "type": "pubkey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "jobOpened",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "job",
+            "type": "pubkey"
+          },
+          {
+            "name": "client",
+            "type": "pubkey"
+          },
+          {
+            "name": "provider",
+            "type": "pubkey"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "jobRejected",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "job",
+            "type": "pubkey"
+          },
+          {
+            "name": "client",
+            "type": "pubkey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "jobSubmitted",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "job",
+            "type": "pubkey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "reputation",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "agent",
+            "type": "pubkey"
+          },
+          {
+            "name": "completedJobs",
+            "type": "u64"
+          },
+          {
+            "name": "rejectedJobs",
+            "type": "u64"
+          },
+          {
+            "name": "totalVolume",
+            "type": "u128"
+          },
+          {
+            "name": "avgLatencyMs",
+            "type": "u32"
+          },
+          {
+            "name": "score",
+            "type": "u64"
+          },
+          {
+            "name": "lastUpdate",
+            "type": "i64"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    }
+  ]
+};

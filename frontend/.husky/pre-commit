@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+# Pre-commit: auth pattern lint + typecheck
+# Portable via husky — works on any clone after npm install
+
+ERRORS=0
+FILES=$(git diff --cached --name-only --diff-filter=ACM -- '*.ts' '*.tsx' || true)
+
+if [ -z "$FILES" ]; then
+  exit 0
+fi
+
+# 1. SKIP_PRIVY_AUTH without DOJO_ prefix
+BAD_ENV=$(echo "$FILES" | xargs grep -n 'SKIP_PRIVY_AUTH' 2>/dev/null | grep -v 'DOJO_SKIP_PRIVY_AUTH' || true)
+if [ -n "$BAD_ENV" ]; then
+  echo "ERROR: Use DOJO_SKIP_PRIVY_AUTH, not SKIP_PRIVY_AUTH"
+  echo "$BAD_ENV"
+  ERRORS=$((ERRORS + 1))
+fi
+
+# 2. skipAuth with || instead of && (auth bypass in production)
+BAD_OP=$(echo "$FILES" | xargs grep -n "DOJO_SKIP_PRIVY_AUTH.*||" 2>/dev/null || true)
+if [ -n "$BAD_OP" ]; then
+  echo "ERROR: DOJO_SKIP_PRIVY_AUTH must use && (not ||) to prevent prod bypass"
+  echo "$BAD_OP"
+  ERRORS=$((ERRORS + 1))
+fi
+
+# 3. userId from body without auth check (warning only)
+BAD_USERID=$(echo "$FILES" | xargs grep -n 'body\.userId\|body\[.userId.\]' 2>/dev/null | grep -v 'skipAuth\|devMode\|dev mode' || true)
+if [ -n "$BAD_USERID" ]; then
+  echo "WARNING: body.userId used outside dev-mode guard — verify auth is checked"
+  echo "$BAD_USERID"
+fi
+
+if [ "$ERRORS" -gt 0 ]; then
+  echo ""
+  echo "Pre-commit blocked: ${ERRORS} error(s). Fix before committing."
+  exit 1
+fi

@@ -1,0 +1,28 @@
+node_modules/
+.next/
+dist/
+target/
+test-ledger/
+.anchor/
+
+.env
+.env.local
+.env.*.local
+
+*.log
+.DS_Store
+
+.vscode/
+.idea/
+frontend/.claude/worktrees/
+
+tsconfig.tsbuildinfo
+coverage/
+
+# Anchor
+**/target/
+**/node_modules/
+
+# Keypairs (never commit!)
+*-keypair.json
+!target/deploy/*-keypair.json

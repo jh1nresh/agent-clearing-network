@@ -1,0 +1,22 @@
+node_modules
+.next
+.env*
+*.log
+*.patch
+*.diff
+
+# Private specs (strategic/architecture docs — keep local)
+specs/
+
+/src/generated/prisma
+dev.db
+prisma/dev.db
+prisma/prisma/
+tsconfig.tsbuildinfo
+
+# Foundry artifacts
+contracts/broadcast/
+contracts/cache/
+.gstack/
+*DIFFERENTIAL_REVIEW_*.md
+DESIGN.md

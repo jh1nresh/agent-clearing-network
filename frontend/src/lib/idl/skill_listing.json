@@ -1,0 +1,353 @@
+{
+  "address": "5sqKpGv5sNVHR2ZXpWzQC3HiJELD4XwZzSP7Wi4qVnd1",
+  "metadata": {
+    "name": "skill_listing",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "Created with Anchor"
+  },
+  "instructions": [
+    {
+      "name": "deactivate_skill",
+      "docs": [
+        "Soft-delete a skill (stays on-chain for audit; no longer resolvable)."
+      ],
+      "discriminator": [
+        128,
+        82,
+        190,
+        200,
+        40,
+        201,
+        247,
+        65
+      ],
+      "accounts": [
+        {
+          "name": "skill",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115,
+                  107,
+                  105,
+                  108,
+                  108
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "provider"
+              },
+              {
+                "kind": "account",
+                "path": "skill.skill_id",
+                "account": "Skill"
+              }
+            ]
+          }
+        },
+        {
+          "name": "provider",
+          "signer": true,
+          "relations": [
+            "skill"
+          ]
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "list_skill",
+      "docs": [
+        "Create a skill listing owned by `provider`."
+      ],
+      "discriminator": [
+        247,
+        246,
+        237,
+        238,
+        50,
+        56,
+        112,
+        182
+      ],
+      "accounts": [
+        {
+          "name": "skill",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115,
+                  107,
+                  105,
+                  108,
+                  108
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "provider"
+              },
+              {
+                "kind": "arg",
+                "path": "skill_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "provider",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "skill_id",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        },
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "endpoint_uri",
+          "type": "string"
+        },
+        {
+          "name": "price",
+          "type": "u64"
+        },
+        {
+          "name": "min_reputation",
+          "type": "u32"
+        },
+        {
+          "name": "accepted_rails",
+          "type": "u8"
+        }
+      ]
+    },
+    {
+      "name": "update_skill",
+      "docs": [
+        "Update price / min_reputation / endpoint / rails. Provider only."
+      ],
+      "discriminator": [
+        116,
+        142,
+        164,
+        86,
+        9,
+        27,
+        112,
+        227
+      ],
+      "accounts": [
+        {
+          "name": "skill",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115,
+                  107,
+                  105,
+                  108,
+                  108
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "provider"
+              },
+              {
+                "kind": "account",
+                "path": "skill.skill_id",
+                "account": "Skill"
+              }
+            ]
+          }
+        },
+        {
+          "name": "provider",
+          "signer": true,
+          "relations": [
+            "skill"
+          ]
+        }
+      ],
+      "args": [
+        {
+          "name": "price",
+          "type": {
+            "option": "u64"
+          }
+        },
+        {
+          "name": "min_reputation",
+          "type": {
+            "option": "u32"
+          }
+        },
+        {
+          "name": "endpoint_uri",
+          "type": {
+            "option": "string"
+          }
+        },
+        {
+          "name": "accepted_rails",
+          "type": {
+            "option": "u8"
+          }
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "Skill",
+      "discriminator": [
+        53,
+        13,
+        242,
+        204,
+        77,
+        249,
+        1,
+        215
+      ]
+    }
+  ],
+  "events": [
+    {
+      "name": "SkillListed",
+      "discriminator": [
+        208,
+        44,
+        218,
+        161,
+        21,
+        136,
+        102,
+        16
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "NameTooLong",
+      "msg": "Name exceeds maximum length"
+    },
+    {
+      "code": 6001,
+      "name": "EndpointUriTooLong",
+      "msg": "Endpoint URI exceeds maximum length"
+    },
+    {
+      "code": 6002,
+      "name": "NoRailsAccepted",
+      "msg": "Must accept at least one payment rail"
+    }
+  ],
+  "types": [
+    {
+      "name": "Skill",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "skill_id",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "provider",
+            "type": "pubkey"
+          },
+          {
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "endpoint_uri",
+            "type": "string"
+          },
+          {
+            "name": "price",
+            "type": "u64"
+          },
+          {
+            "name": "min_reputation",
+            "type": "u32"
+          },
+          {
+            "name": "accepted_rails",
+            "type": "u8"
+          },
+          {
+            "name": "active",
+            "type": "bool"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "SkillListed",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "provider",
+            "type": "pubkey"
+          },
+          {
+            "name": "skill_id",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "price",
+            "type": "u64"
+          },
+          {
+            "name": "min_reputation",
+            "type": "u32"
+          }
+        ]
+      }
+    }
+  ]
+}

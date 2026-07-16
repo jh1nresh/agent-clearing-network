@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# Post-merge: remind to run session-close if brain/ exists
+if [ -d "$HOME/brain" ] && [ -f "$HOME/brain/scripts/session-close.sh" ]; then
+  echo ""
+  echo "💡 Run ~/brain/scripts/session-close.sh to sync brain/"
+fi
